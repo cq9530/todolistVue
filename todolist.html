@@ -3,6 +3,10 @@
 <head>
     <title>奇妙清单</title>
     <meta charset="utf-8">
+    <style>
+        .done-ul {
+            text-decoration: line-through;
+        }
     </style>
     <script src="https://unpkg.com/vue"></script>
 </head>
@@ -11,10 +15,14 @@
     <div id="todolist">
         <input v-model="newTodoText" v-on:keyup.enter="addNewTodo" placeholder="Add a todo" />
         <ul>
-            <li is="todoitem" v-for="(todo, index) in todos" v-bind:key="index" v-bind:title="todo" v-bind:complet="complet" v-on:click="todone"></li>
+            <li is="item" v-for="item in todos" v-bind:data="item" v-bind:click="function(){togger(item)}"></li>
+        </ul>
+        <div v-if="dones.length!==0" @click="toggerDones">{{dones.length}}件已完成</div>
+        <ul v-show="seen" class="done-ul">
+            <li is="item" v-for="item in dones" v-bind:data="item" v-bind:click="function(){togger(item)}"></li>
         </ul>
     </div>
-    <script src="todolist.js"></script>
+    <script src="todolist.js "></script>
 </body>
 
 </html>

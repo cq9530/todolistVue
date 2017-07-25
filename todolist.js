@@ -1,33 +1,58 @@
-Vue.component('todoitem', {
+Vue.component('item', {
     template: '\
     <li>\
-      {{ title }}\
-        <button v-on:click=\"complet\" > X </button>\
+        <input type=\"checkbox\" :checked="data.hasdone" v-on:click=\"click\"/>\
+        {{ data.thing }}\
     </li>\
     ',
-    props: ['title', 'complet']
+    props: ['data', 'click']
 })
 new Vue({
     el: '#todolist',
     data: {
         newTodoText: '',
-        todos: [
-            'Do the dishes',
-            'Take out the trash',
-            'Mow the lawn'
-        ],
-        dones: []
+        seen: true,
+        things: [{
+            thing: 'Do the dishes',
+            hasdone: false
+        }, {
+            thing: 'Take out the trash',
+            hasdone: false
+        }, {
+            thing: 'Mow the lawn',
+            hasdone: false
+        }]
+    },
+    computed: {
+        todos: function() {
+            var todos = []
+            for (var i = 0; i < this.things.length; i++) {
+                if (this.things[i].hasdone !== true) {
+                    todos.push(this.things[i])
+                }
+            }
+            return todos
+        },
+        dones: function() {
+            var dones = []
+            for (var i = 0; i < this.things.length; i++) {
+                if (this.things[i].hasdone === true) {
+                    dones.push(this.things[i])
+                }
+            }
+            return dones
+        }
     },
     methods: {
         addNewTodo: function() {
-            this.todos.push(this.newTodoText)
-            this.newTodoText = ''
+            this.todos.push(this.newTodoText);
+            this.newTodoText = '';
         },
-        complet: function() {
-            console.log(1)
+        togger: function(item) {
+            item.hasdone = !item.hasdone;
         },
-        todone: function() {
-
+        toggerDones: function() {
+            this.seen = !this.seen;
         }
     }
 })
